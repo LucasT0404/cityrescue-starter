@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: PublicTickLifecycleTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.007 s <<< FAILURE! -- in PublicTickLifecycleTest
+PublicTickLifecycleTest.tick_movesUnitTowardIncident_andEventuallyResolves -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.UnsupportedOperationException: Not implemented yet
+	at cityrescue.CityRescueImpl.initialise(CityRescueImpl.java:19)
+	at PublicTickLifecycleTest.setUp(PublicTickLifecycleTest.java:14)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+

@@ -1,0 +1,28 @@
+-------------------------------------------------------------------------------
+Test set: PublicBasicsTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.017 s <<< FAILURE! -- in PublicBasicsTest
+PublicBasicsTest.addObstacle_outOfBounds_throws_andStateUnchanged -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.UnsupportedOperationException: Not implemented yet
+	at cityrescue.CityRescueImpl.initialise(CityRescueImpl.java:19)
+	at PublicBasicsTest.setUp(PublicBasicsTest.java:14)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+PublicBasicsTest.initialise_setsGridSize_andResetsTick -- Time elapsed: 0.005 s <<< ERROR!
+java.lang.UnsupportedOperationException: Not implemented yet
+	at cityrescue.CityRescueImpl.initialise(CityRescueImpl.java:19)
+	at PublicBasicsTest.setUp(PublicBasicsTest.java:14)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
+PublicBasicsTest.addStation_assignsIdStartingAt1 -- Time elapsed: 0.003 s <<< ERROR!
+java.lang.UnsupportedOperationException: Not implemented yet
+	at cityrescue.CityRescueImpl.initialise(CityRescueImpl.java:19)
+	at PublicBasicsTest.setUp(PublicBasicsTest.java:14)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+
