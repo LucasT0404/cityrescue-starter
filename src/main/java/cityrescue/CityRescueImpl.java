@@ -206,13 +206,41 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int idx = findUnitIndex(unitId);
+        Unit u = units[idx];
+        int sIdx = findStationIndex(newStationId);
+        Station s = stations[sIdx];
+        if (u.getStatus() != UnitStatus.IDLE) {
+            throw new IllegalStateException("Unit must be Idle");
+        }
+        if (!s.hasCapacity()) {
+            throw new IllegalStateException("Station is at capacity");
+        }
+        int oldIdx = findStationIndex(u.getHomeStationId());
+        stations[oldIdx].decrementUnitCount();
+        u.setHomeStationId(newStationId);
+        u.setX(s.getX());
+        u.setY(s.getY());
+        s.incrementUnitCount();
     }
 
     @Override
     public void setUnitOutOfService(int unitId, boolean outOfService)
             throws IDNotRecognisedException, IllegalStateException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int idx = findUnitIndex(unitId);
+        Unit u = units[idx];
+        if (outOfService) {
+            if (u.getStatus() != UnitStatus.IDLE) {
+                throw new IllegalStateException("Unit must be Idle");
+            }
+            u.setStatus(UnitStatus.OUT_OF_SERVICE);
+        } else {
+            if (u.getStatus() != UnitStatus.OUT_OF_SERVICE) {
+                throw new IllegalStateException("Unit must be Out of Service");
+
+            }
+            u.setStatus(UnitStatus.IDLE);
+        }
     }
 
     /**
