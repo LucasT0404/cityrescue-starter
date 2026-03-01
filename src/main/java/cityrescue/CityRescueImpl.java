@@ -310,7 +310,39 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void dispatch() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        for (int i = 0; i < incidentCount; i++) {
+            if (incidents[i].getStatus() != IncidentStatus.REPORTED) {
+                continue;
+            }
+            Unit bestUnit = null;
+            for (int j = 0; j < unitCount; j++) {
+                if (units[j].getStatus() == UnitStatus.IDLE && units[j].canHandle(incidents[i].getType())) {
+                    if (bestUnit == null) {
+                        bestUnit = units[j];
+                    } else {
+                        int newDistance = units[j].manhattanDistance(incidents[i].getX(), incidents[i].getY());
+                        int bestDistance = bestUnit.manhattanDistance(incidents[i].getX(), incidents[i].getY());
+                        if (newDistance < bestDistance) {
+                            bestUnit = units[j];
+                        } else if (newDistance == bestDistance) {
+                            if (units[j].getUnitId() < bestUnit.getUnitId()) {
+                                bestUnit = units[j];
+                            } else if (units[j].getUnitId() == bestUnit.getUnitId()) {
+                                if (units[j].getHomeStationId() < bestUnit.getHomeStationId()) {
+                                    bestUnit = units[j];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (bestUnit != null) {
+                bestUnit.setStatus(UnitStatus.EN_ROUTE);
+                bestUnit.setAssignedIncidentId(incidents[i].getIncidentId());
+                incidents[i].setStatus(IncidentStatus.DISPATCHED);
+                incidents[i].setAssignedUnitId((bestUnit.getUnitId()));
+            }
+        }
     }
 
     @Override
