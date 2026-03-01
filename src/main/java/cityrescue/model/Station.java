@@ -18,17 +18,43 @@ public class Station {
         this.unitCount = 0;
     }
 
-    public int getStationId() { return stationId; }
-    public String getName() { return name; }
-    public int getX() { return x; }
-    public int getY() { return y; }
-    public int getMaxUnits() { return maxUnits; }
-    public int getUnitCount() { return unitCount; }
+    public int getStationId() {
+        return stationId;
+    }
 
-    public void setMaxUnits(int maxUnits) { this.maxUnits = maxUnits; }
+    public String getName() {
+        return name;
+    }
 
-    public boolean hasCapacity() { return unitCount < maxUnits; }
+    public int getX() {
+        return x;
+    }
 
-    public void incrementUnitCount() { unitCount++; }
-    public void decrementUnitCount() { unitCount--; }
+    public int getY() {
+        return y;
+    }
+
+    public int getMaxUnits() {
+        return maxUnits;
+    }
+
+    public int getUnitCount() {
+        return unitCount;
+    }
+
+    public void setMaxUnits(int maxUnits) {
+        this.maxUnits = maxUnits;
+    }
+
+    public boolean hasCapacity() {
+        return unitCount < maxUnits;
+    }
+
+    public void incrementUnitCount() {
+        unitCount++;
+    }
+
+    public void decrementUnitCount() {
+        unitCount--;
+    }
 }

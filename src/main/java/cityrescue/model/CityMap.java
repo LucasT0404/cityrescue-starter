@@ -44,7 +44,8 @@ public class CityMap {
         int count = 0;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (blocked[x][y]) count++;
+                if (blocked[x][y])
+                    count++;
             }
         }
         return count;

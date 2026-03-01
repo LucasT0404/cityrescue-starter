@@ -6,8 +6,8 @@ import cityrescue.model.*;
 
 public class CityRescueImpl implements CityRescue {
 
-    private static final int MAX_STATIONS  = 20;
-    private static final int MAX_UNITS     = 50;
+    private static final int MAX_STATIONS = 20;
+    private static final int MAX_UNITS = 50;
     private static final int MAX_INCIDENTS = 200;
     private static final int DEFAULT_STATION_CAPACITY = 5;
 
@@ -34,22 +34,22 @@ public class CityRescueImpl implements CityRescue {
         map = new CityMap(width, height);
         currentTick = 0;
 
-        stations      = new Station[MAX_STATIONS];
-        stationCount  = 0;
+        stations = new Station[MAX_STATIONS];
+        stationCount = 0;
         nextStationId = 1;
 
-        units      = new Unit[MAX_UNITS];
-        unitCount  = 0;
+        units = new Unit[MAX_UNITS];
+        unitCount = 0;
         nextUnitId = 1;
 
-        incidents      = new Incident[MAX_INCIDENTS];
-        incidentCount  = 0;
+        incidents = new Incident[MAX_INCIDENTS];
+        incidentCount = 0;
         nextIncidentId = 1;
     }
 
     @Override
     public int[] getGridSize() {
-        return new int[]{map.getWidth(), map.getHeight()};
+        return new int[] { map.getWidth(), map.getHeight() };
     }
 
     @Override
@@ -102,7 +102,8 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public void setStationCapacity(int stationId, int maxUnits) throws IDNotRecognisedException, InvalidCapacityException {
+    public void setStationCapacity(int stationId, int maxUnits)
+            throws IDNotRecognisedException, InvalidCapacityException {
         int idx = findStationIndex(stationId);
         if (maxUnits <= 0) {
             throw new InvalidCapacityException("Capacity must be > 0.");
@@ -124,7 +125,8 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
+    public int addUnit(int stationId, UnitType type)
+            throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
         int sIdx = findStationIndex(stationId);
         if (type == null) {
             throw new InvalidUnitException("UnitType must not be null.");
@@ -169,7 +171,8 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
+    public int reportIncident(IncidentType type, int severity, int x, int y)
+            throws InvalidSeverityException, InvalidLocationException {
         if (type == null) {
             throw new InvalidLocationException("IncidentType must not be null.");
         }
@@ -201,7 +204,8 @@ public class CityRescueImpl implements CityRescue {
         return ids;
     }
 
-    // ------------------------------------------------------------------ Person B stubs
+    // ------------------------------------------------------------------ Person B
+    // stubs
 
     @Override
     public void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException {
@@ -209,7 +213,8 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public void setUnitOutOfService(int unitId, boolean outOfService) throws IDNotRecognisedException, IllegalStateException {
+    public void setUnitOutOfService(int unitId, boolean outOfService)
+            throws IDNotRecognisedException, IllegalStateException {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
@@ -224,7 +229,8 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override
-    public void escalateIncident(int incidentId, int newSeverity) throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
+    public void escalateIncident(int incidentId, int newSeverity)
+            throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
@@ -248,47 +254,82 @@ public class CityRescueImpl implements CityRescue {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
-    // ------------------------------------------------------------------ helpers (package-visible for Person B)
+    // ------------------------------------------------------------------ helpers
+    // (package-visible for Person B)
 
     int findStationIndex(int stationId) throws IDNotRecognisedException {
         for (int i = 0; i < stationCount; i++) {
-            if (stations[i].getStationId() == stationId) return i;
+            if (stations[i].getStationId() == stationId)
+                return i;
         }
         throw new IDNotRecognisedException("No station with ID " + stationId);
     }
 
     int findUnitIndex(int unitId) throws IDNotRecognisedException {
         for (int i = 0; i < unitCount; i++) {
-            if (units[i].getUnitId() == unitId) return i;
+            if (units[i].getUnitId() == unitId)
+                return i;
         }
         throw new IDNotRecognisedException("No unit with ID " + unitId);
     }
 
     int findIncidentIndex(int incidentId) throws IDNotRecognisedException {
         for (int i = 0; i < incidentCount; i++) {
-            if (incidents[i].getIncidentId() == incidentId) return i;
+            if (incidents[i].getIncidentId() == incidentId)
+                return i;
         }
         throw new IDNotRecognisedException("No incident with ID " + incidentId);
     }
 
-    Station[]  getStationsArray()     { return stations; }
-    int        getStationCount()      { return stationCount; }
-    Unit[]     getUnitsArray()        { return units; }
-    int        getUnitCount()         { return unitCount; }
-    Incident[] getIncidentsArray()    { return incidents; }
-    int        getIncidentCountField(){ return incidentCount; }
-    int        getCurrentTick()       { return currentTick; }
-    void       setCurrentTick(int t)  { currentTick = t; }
-    CityMap    getMap()               { return map; }
+    Station[] getStationsArray() {
+        return stations;
+    }
 
-    // ------------------------------------------------------------------ private utilities
+    int getStationCount() {
+        return stationCount;
+    }
+
+    Unit[] getUnitsArray() {
+        return units;
+    }
+
+    int getUnitCount() {
+        return unitCount;
+    }
+
+    Incident[] getIncidentsArray() {
+        return incidents;
+    }
+
+    int getIncidentCountField() {
+        return incidentCount;
+    }
+
+    int getCurrentTick() {
+        return currentTick;
+    }
+
+    void setCurrentTick(int t) {
+        currentTick = t;
+    }
+
+    CityMap getMap() {
+        return map;
+    }
+
+    // ------------------------------------------------------------------ private
+    // utilities
 
     private Unit createUnit(int id, UnitType type, int homeStationId, int x, int y) {
         switch (type) {
-            case AMBULANCE:   return new Ambulance(id, homeStationId, x, y);
-            case FIRE_ENGINE: return new FireEngine(id, homeStationId, x, y);
-            case POLICE_CAR:  return new PoliceCar(id, homeStationId, x, y);
-            default: throw new IllegalArgumentException("Unknown UnitType: " + type);
+            case AMBULANCE:
+                return new Ambulance(id, homeStationId, x, y);
+            case FIRE_ENGINE:
+                return new FireEngine(id, homeStationId, x, y);
+            case POLICE_CAR:
+                return new PoliceCar(id, homeStationId, x, y);
+            default:
+                throw new IllegalArgumentException("Unknown UnitType: " + type);
         }
     }
 

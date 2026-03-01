@@ -23,15 +23,43 @@ public class Incident {
         this.assignedUnitId = -1;
     }
 
-    public int getIncidentId()         { return incidentId; }
-    public IncidentType getType()      { return type; }
-    public int getSeverity()           { return severity; }
-    public int getX()                  { return x; }
-    public int getY()                  { return y; }
-    public IncidentStatus getStatus()  { return status; }
-    public int getAssignedUnitId()     { return assignedUnitId; }
+    public int getIncidentId() {
+        return incidentId;
+    }
 
-    public void setSeverity(int severity)          { this.severity = severity; }
-    public void setStatus(IncidentStatus status)   { this.status = status; }
-    public void setAssignedUnitId(int unitId)      { this.assignedUnitId = unitId; }
+    public IncidentType getType() {
+        return type;
+    }
+
+    public int getSeverity() {
+        return severity;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public IncidentStatus getStatus() {
+        return status;
+    }
+
+    public int getAssignedUnitId() {
+        return assignedUnitId;
+    }
+
+    public void setSeverity(int severity) {
+        this.severity = severity;
+    }
+
+    public void setStatus(IncidentStatus status) {
+        this.status = status;
+    }
+
+    public void setAssignedUnitId(int unitId) {
+        this.assignedUnitId = unitId;
+    }
 }
