@@ -12,3 +12,10 @@
 /workspaces/cityrescue-starter/src/main/java/cityrescue/exceptions/InvalidNameException.java
 /workspaces/cityrescue-starter/src/main/java/cityrescue/exceptions/InvalidSeverityException.java
 /workspaces/cityrescue-starter/src/main/java/cityrescue/exceptions/InvalidUnitException.java
+/workspaces/cityrescue-starter/src/main/java/cityrescue/model/Ambulance.java
+/workspaces/cityrescue-starter/src/main/java/cityrescue/model/CityMap.java
+/workspaces/cityrescue-starter/src/main/java/cityrescue/model/FireEngine.java
+/workspaces/cityrescue-starter/src/main/java/cityrescue/model/Incident.java
+/workspaces/cityrescue-starter/src/main/java/cityrescue/model/PoliceCar.java
+/workspaces/cityrescue-starter/src/main/java/cityrescue/model/Station.java
+/workspaces/cityrescue-starter/src/main/java/cityrescue/model/Unit.java
