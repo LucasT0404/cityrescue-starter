@@ -238,13 +238,33 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void cancelIncident(int incidentId) throws IDNotRecognisedException, IllegalStateException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int idx = findIncidentIndex(incidentId);
+        Incident i = incidents[idx];
+        if (i.getStatus() != IncidentStatus.REPORTED && i.getStatus() != IncidentStatus.DISPATCHED) {
+            throw new IllegalStateException("Cannot cancel incident");
+        }
+        if (i.getStatus() == IncidentStatus.DISPATCHED) {
+            int uIdx = findUnitIndex(i.getAssignedUnitId());
+            Unit u = units[uIdx];
+            u.setStatus(UnitStatus.IDLE);
+            u.setAssignedIncidentId(-1);
+        }
+        i.setStatus(IncidentStatus.CANCELLED);
+        i.setAssignedUnitId(-1);
     }
 
     @Override
     public void escalateIncident(int incidentId, int newSeverity)
             throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int idx = findIncidentIndex(incidentId);
+        Incident i = incidents[idx];
+        if (newSeverity < 1 || newSeverity > 5) {
+            throw new InvalidSeverityException("Severity must be 1-5");
+        }
+        if (i.getStatus() == IncidentStatus.RESOLVED || i.getStatus() == IncidentStatus.CANCELLED) {
+            throw new IllegalStateException("Incident must not be Resolved or Cancelled");
+        }
+        i.setSeverity(newSeverity);
     }
 
     @Override
