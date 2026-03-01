@@ -204,9 +204,6 @@ public class CityRescueImpl implements CityRescue {
         return ids;
     }
 
-    // ------------------------------------------------------------------ Person B
-    // stubs
-
     @Override
     public void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException {
         throw new UnsupportedOperationException("Not implemented yet.");
@@ -218,9 +215,25 @@ public class CityRescueImpl implements CityRescue {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
+    /**
+     * @param unitID what unit the the method is viewing
+     * @return unit string matching format
+     * @throws IDNotRecognisedException in case unitID doesn't exist
+     */
     @Override
     public String viewUnit(int unitId) throws IDNotRecognisedException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int idx = findUnitIndex(unitId);
+        Unit u = units[idx];
+        String result = "U#" + u.getUnitId()
+                + " TYPE=" + u.getUnitType()
+                + " HOME=" + u.getHomeStationId()
+                + " LOC=(" + u.getX() + "," + u.getY() + ")"
+                + " STATUS=" + u.getStatus()
+                + " INCIDENT=" + (u.getAssignedIncidentId() == -1 ? "-" : u.getAssignedIncidentId());
+        if (u.getStatus() == UnitStatus.AT_SCENE) {
+            result += " WORK=" + u.getWorkTicksRemaining();
+        }
+        return result;
     }
 
     @Override
@@ -236,7 +249,15 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int idx = findIncidentIndex(incidentId);
+        Incident i = incidents[idx];
+        String result = "I#" + i.getIncidentId()
+                + " TYPE=" + i.getType()
+                + " SEV=" + i.getSeverity()
+                + " LOC=(" + i.getX() + "," + i.getY() + ")"
+                + " STATUS=" + i.getStatus()
+                + " UNIT=" + (i.getAssignedUnitId() == -1 ? "-" : i.getAssignedUnitId());
+        return result;
     }
 
     @Override
@@ -251,11 +272,25 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public String getStatus() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        String result = "TICK=" + currentTick + "\n";
+        result += "STATIONS=" + stationCount + " UNITS=" + unitCount + " INCIDENTS=" + incidentCount + " OBSTACLES="
+                + map.countObstacles();
+        result += "\nINCIDENTS";
+        for (int i = 0; i < incidentCount; i++) {
+            try {
+                result += "\n" + viewIncident(incidents[i].getIncidentId());
+            } catch (IDNotRecognisedException e) {
+            }
+        }
+        result += "\nUNITS";
+        for (int i = 0; i < unitCount; i++) {
+            try {
+                result += "\n" + viewUnit(units[i].getUnitId());
+            } catch (IDNotRecognisedException e) {
+            }
+        }
+        return result;
     }
-
-    // ------------------------------------------------------------------ helpers
-    // (package-visible for Person B)
 
     int findStationIndex(int stationId) throws IDNotRecognisedException {
         for (int i = 0; i < stationCount; i++) {
@@ -316,9 +351,6 @@ public class CityRescueImpl implements CityRescue {
     CityMap getMap() {
         return map;
     }
-
-    // ------------------------------------------------------------------ private
-    // utilities
 
     private Unit createUnit(int id, UnitType type, int homeStationId, int x, int y) {
         switch (type) {
