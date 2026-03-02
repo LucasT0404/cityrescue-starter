@@ -347,8 +347,98 @@ public class CityRescueImpl implements CityRescue {
 
     @Override
     public void tick() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        currentTick++;
+
+        for (int i = 0; i < unitCount; i++) {
+            if (units[i].getStatus() == UnitStatus.EN_ROUTE) {
+                int xCoord = 0;
+                int yCoord = 0;
+                for (int k = 0; k < incidentCount; k++) {
+                    if (incidents[k].getIncidentId() == units[i].getAssignedIncidentId()) {
+                        xCoord = incidents[k].getX();
+                        yCoord = incidents[k].getY();
+                        break;
+                    }
+                }
+                int unitX = units[i].getX();
+                int unitY = units[i].getY();
+                int[] xDirection = { 0, 1, 0, -1 };
+                int[] yDirection = { -1, 0, 1, 0 };
+                boolean moved = false;
+                int distance = units[i].manhattanDistance(xCoord, yCoord);
+                for (int j = 0; j < xDirection.length; j++) {
+                    int newX = unitX + xDirection[j];
+                    int newY = unitY + yDirection[j];
+                    if (map.isLegalMove(newX, newY)) {
+                        int newDistance = Math.abs(newX - xCoord) + Math.abs(newY - yCoord);
+                        if (newDistance < distance) {
+                            moved = true;
+                            units[i].setX(newX);
+                            units[i].setY(newY);
+                            break;
+                        }
+                    }
+                }
+                if (!moved) {
+                    for (int k = 0; k < yDirection.length; k++) {
+                        int newX = unitX + xDirection[k];
+                        int newY = unitY + yDirection[k];
+                        if (map.isLegalMove(newX, newY)) {
+                            units[i].setX(newX);
+                            units[i].setY(newY);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < unitCount; i++) {
+            if (units[i].getStatus() == UnitStatus.EN_ROUTE) {
+                int xUnit = units[i].getX();
+                int yUnit = units[i].getY();
+                int xIncident = 0;
+                int yIncident = 0;
+                Incident inc = null;
+                for (int l = 0; l < incidentCount; l++) {
+                    if (incidents[l].getIncidentId() == units[i].getAssignedIncidentId()) {
+                        inc = incidents[l];
+                        xIncident = incidents[l].getX();
+                        yIncident = incidents[l].getY();
+                        break;
+                    }
+                }
+                if (xUnit == xIncident && yUnit == yIncident) {
+                    units[i].setStatus(UnitStatus.AT_SCENE);
+                    units[i].setWorkTicksRemaining(units[i].getTicksToResolve(0));
+                    inc.setStatus(IncidentStatus.IN_PROGRESS);
+                }
+            }
+        }
+        for (int i = 0; i < unitCount; i++) {
+            if (units[i].getStatus() == UnitStatus.AT_SCENE) {
+                units[i].decrementWorkTicks();
+            }
+        }
+        for (int j = 0; j < incidentCount; j++) {
+            if (incidents[j].getStatus() == IncidentStatus.IN_PROGRESS) {
+                Unit u = null;
+                for (int k = 0; k < unitCount; k++) {
+                    if (units[k].getUnitId() == incidents[j].getAssignedUnitId()) {
+                        u = units[k];
+                        break;
+                    }
+                }
+                if (u != null && u.getWorkTicksRemaining() == 0) {
+                    incidents[j].setStatus(IncidentStatus.RESOLVED);
+                    incidents[j].setAssignedUnitId(-1);
+                    u.setStatus(UnitStatus.IDLE);
+                    u.setAssignedIncidentId(-1);
+                }
+            }
+        }
     }
+
+
 
     @Override
     public String getStatus() {
