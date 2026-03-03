@@ -178,7 +178,7 @@ public abstract class Unit {
      *
      * @param tx unit target x-Coord
      * @param ty unit target y-Coord
-     * @return
+     * @return Manhattan distance to target
      */
     public int manhattanDistance(int tx, int ty) {
         return Math.abs(x - tx) + Math.abs(y - ty);
