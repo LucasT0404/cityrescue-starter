@@ -26,6 +26,13 @@ public class CityRescueImpl implements CityRescue {
     private int incidentCount;
     private int nextIncidentId;
 
+    /**
+     * Starts the simulation and eliminates existing data
+     *
+     * @param width  width of the map
+     * @param height height of the map
+     * @throws InvalidGridException in case width and/or height are negative numbers
+     */
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
         if (width <= 0 || height <= 0) {
@@ -47,11 +54,24 @@ public class CityRescueImpl implements CityRescue {
         nextIncidentId = 1;
     }
 
+    /**
+     * Finds and returns a list with the width and height of the grid.
+     *
+     * @return integer list with grid[width, height]
+     */
     @Override
     public int[] getGridSize() {
         return new int[] { map.getWidth(), map.getHeight() };
     }
 
+    /**
+     * Adds an obstacle to the grid
+     *
+     * @param x x-Coordinate in the grid
+     * @param y y-Coordinate in the grid.
+     * @throws InvalidLocationException in case of the (x, y) coords being
+     *                                  out-of-bouds.
+     */
     @Override
     public void addObstacle(int x, int y) throws InvalidLocationException {
         if (!map.inBounds(x, y)) {
@@ -60,6 +80,13 @@ public class CityRescueImpl implements CityRescue {
         map.setBlocked(x, y);
     }
 
+    /**
+     * Removes an obstacle from the grid
+     *
+     * @param x x-Coordinate of obstacle on grid
+     * @param y y-Coordinate of obstacle on grid
+     * @throws InvalidLocationException in case of (x, y) coords being out-of-bounds
+     */
     @Override
     public void removeObstacle(int x, int y) throws InvalidLocationException {
         if (!map.inBounds(x, y)) {
@@ -68,6 +95,17 @@ public class CityRescueImpl implements CityRescue {
         map.clearBlocked(x, y);
     }
 
+    /**
+     * Adds a station to the grid
+     *
+     * @param name string to name the station
+     * @param x    x-Coordinate on grid
+     * @param y    y-Coordinate on grid.
+     * @return returns the created Station ID
+     * @throws InvalidNameException     in case of a name for the station not
+     *                                  provided
+     * @throws InvalidLocationException in case of (x, y) coords being out-of-bounds
+     */
     @Override
     public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
         if (name == null || name.trim().isEmpty()) {
@@ -88,6 +126,14 @@ public class CityRescueImpl implements CityRescue {
         return nextStationId++;
     }
 
+    /**
+     * Remove station from the map
+     *
+     * @param stationId number of Station ID
+     * @throws IDNotRecognisedException in case of the StationID being non-existent.
+     * @throws IllegalStateException    in case of the Station still having
+     *                                  remaining units
+     */
     @Override
     public void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException {
         int idx = findStationIndex(stationId);
@@ -101,6 +147,15 @@ public class CityRescueImpl implements CityRescue {
         stationCount--;
     }
 
+    /**
+     * Sets a unit capacity for a station
+     *
+     * @param stationID number of Station ID.
+     * @param maxUnits  amount of units assigned to the station
+     * @throws IDNotRecognisedException in case of StationId being non-existent
+     * @throws InvalidCapacityException in case of capacity being a negative number
+     *                                  or less than current unit count
+     */
     @Override
     public void setStationCapacity(int stationId, int maxUnits)
             throws IDNotRecognisedException, InvalidCapacityException {
@@ -114,6 +169,11 @@ public class CityRescueImpl implements CityRescue {
         stations[idx].setMaxUnits(maxUnits);
     }
 
+    /**
+     * Finds stationID
+     *
+     * @return an integer list with stationId's
+     */
     @Override
     public int[] getStationIds() {
         int[] ids = new int[stationCount];
@@ -124,6 +184,17 @@ public class CityRescueImpl implements CityRescue {
         return ids;
     }
 
+    /**
+     * Adds a unit to a station
+     *
+     * @param stationId number of StationID
+     * @param type      takes type of unit added to the station
+     * @return Id of the unit added
+     * @throws IDNotRecognisedException in case of station ID being non-existent
+     * @throws InvalidUnitException     in case of unit type being null
+     * @throws IllegalStateException    in case of maximum number of units at
+     *                                  station reached.
+     */
     @Override
     public int addUnit(int stationId, UnitType type)
             throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
@@ -144,6 +215,14 @@ public class CityRescueImpl implements CityRescue {
         return nextUnitId++;
     }
 
+    /**
+     * Permanently removes unit
+     *
+     * @param unitId number for unit ID
+     * @throws IDNotRecognisedException in case of non-existent unit ID
+     * @throws IllegalStateException    in case of unit being active (EN_ROUTE or
+     *                                  AT_SCENE)
+     */
     @Override
     public void decommissionUnit(int unitId) throws IDNotRecognisedException, IllegalStateException {
         int idx = findUnitIndex(unitId);
@@ -160,6 +239,11 @@ public class CityRescueImpl implements CityRescue {
         unitCount--;
     }
 
+    /**
+     * Gets ID for all existing units
+     *
+     * @return list of unit ID's
+     */
     @Override
     public int[] getUnitIds() {
         int[] ids = new int[unitCount];
@@ -170,6 +254,18 @@ public class CityRescueImpl implements CityRescue {
         return ids;
     }
 
+    /**
+     * Creates instance of an incident and IncidentID
+     *
+     * @param type     takes type of incident
+     * @param severity severity level number
+     * @param x        x-Coordinate in the map
+     * @param y        y-Coordinate in the map
+     * @return number of IncidentID
+     * @throws InvalidSeverityException in case of severity argument not being
+     *                                  between 1-5
+     * @throws InvalidLocationException in case of (x, y) coords being out-of-bounds
+     */
     @Override
     public int reportIncident(IncidentType type, int severity, int x, int y)
             throws InvalidSeverityException, InvalidLocationException {
@@ -194,6 +290,11 @@ public class CityRescueImpl implements CityRescue {
         return nextIncidentId++;
     }
 
+    /**
+     * Gets ID's for all incidents on grid
+     *
+     * @return list of all existing IncidentID's
+     */
     @Override
     public int[] getIncidentIds() {
         int[] ids = new int[incidentCount];
@@ -204,6 +305,15 @@ public class CityRescueImpl implements CityRescue {
         return ids;
     }
 
+    /**
+     * Transfers unit from one station to another
+     * 
+     * @param unitId       Id number of unit being transferred
+     * @param newStationId Id number of new station for the selected unit.
+     * @throws IDNotRecognisedException in case of either ID being non-existent
+     * @throws IllegalStateException    in case of unit being active or station
+     *                                  being at capacity
+     */
     @Override
     public void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException {
         int idx = findUnitIndex(unitId);
@@ -437,8 +547,6 @@ public class CityRescueImpl implements CityRescue {
             }
         }
     }
-
-
 
     @Override
     public String getStatus() {
