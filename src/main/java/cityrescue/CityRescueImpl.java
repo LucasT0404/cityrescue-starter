@@ -307,7 +307,7 @@ public class CityRescueImpl implements CityRescue {
 
     /**
      * Transfers unit from one station to another
-     * 
+     *
      * @param unitId       Id number of unit being transferred
      * @param newStationId Id number of new station for the selected unit.
      * @throws IDNotRecognisedException in case of either ID being non-existent
@@ -334,6 +334,16 @@ public class CityRescueImpl implements CityRescue {
         s.incrementUnitCount();
     }
 
+    /**
+     * Sets selected unit out of service
+     *
+     * @param unitId       ID number of selected unit
+     * @param outOfService boolean state of unit
+     * @throws IDNotRecognisedException in case of unit ID being non-existent
+     * @throws IllegalStateException    in case of unit not being in the required
+     *                                  state (IDLE to disable, OUT_OF_SERVICE to
+     *                                  enable)
+     */
     @Override
     public void setUnitOutOfService(int unitId, boolean outOfService)
             throws IDNotRecognisedException, IllegalStateException {
@@ -374,6 +384,14 @@ public class CityRescueImpl implements CityRescue {
         return result;
     }
 
+    /**
+     * Cancels an incident instance
+     *
+     * @param incidentId Id number of incident
+     * @throws IDNotRecognisedException in case of incident ID being non-existent
+     * @throws IllegalStateException    in case of incident status not being
+     *                                  DISPATCHED or REPORTED
+     */
     @Override
     public void cancelIncident(int incidentId) throws IDNotRecognisedException, IllegalStateException {
         int idx = findIncidentIndex(incidentId);
@@ -391,6 +409,16 @@ public class CityRescueImpl implements CityRescue {
         i.setAssignedUnitId(-1);
     }
 
+    /**
+     * Escalates incident severity level
+     *
+     * @param incidentId  ID number of selected incident
+     * @param newSeverity new severity level for the incident
+     * @throws IDNotRecognisedException in case of non-existent IncidentID
+     * @throws InvalidSeverityException in case of severity level not being 1-5
+     * @throws IllegalStateException    in case of incident being RESOLVED or
+     *                                  CANCELLED
+     */
     @Override
     public void escalateIncident(int incidentId, int newSeverity)
             throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
@@ -405,6 +433,14 @@ public class CityRescueImpl implements CityRescue {
         i.setSeverity(newSeverity);
     }
 
+    /**
+     * Print incident details
+     *
+     * @param incidentId ID number of selected incident
+     * @return string containing Incident: ID number, type, severity level,
+     *         location, status, and assigned unit.
+     * @throws IDNotRecognisedException in case of non-existent incidentID
+     */
     @Override
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
         int idx = findIncidentIndex(incidentId);
@@ -418,6 +454,10 @@ public class CityRescueImpl implements CityRescue {
         return result;
     }
 
+    /**
+     * Dispatches units to assigned incidents and sets units and incidents to
+     * EN_ROUTE and DISPATCHED statuses
+     */
     @Override
     public void dispatch() {
         for (int i = 0; i < incidentCount; i++) {
@@ -455,6 +495,13 @@ public class CityRescueImpl implements CityRescue {
         }
     }
 
+    /**
+     * Advances simulation by one tick
+     * Starts movement for EN_ROUTE units toward their assigned incidents
+     * Checks for unit arrivals and starts AT_SCENE status
+     * Decreases work ticks remaining for IN_PROGRESS incidents
+     * Sets completed incidents to RESOLVED
+     */
     @Override
     public void tick() {
         currentTick++;
@@ -548,6 +595,13 @@ public class CityRescueImpl implements CityRescue {
         }
     }
 
+    /**
+     * Creates formatted status of simulation including
+     * tick/station/unit/incident/obstacle counts, and details on all existing
+     * incidents/units
+     *
+     * @return string of simulation status with all details mentioned above
+     */
     @Override
     public String getStatus() {
         String result = "TICK=" + currentTick + "\n";
