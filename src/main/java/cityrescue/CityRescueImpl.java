@@ -150,7 +150,7 @@ public class CityRescueImpl implements CityRescue {
     /**
      * Sets a unit capacity for a station
      *
-     * @param stationID number of Station ID.
+     * @param stationId number of Station ID.
      * @param maxUnits  amount of units assigned to the station
      * @throws IDNotRecognisedException in case of StationId being non-existent
      * @throws InvalidCapacityException in case of capacity being a negative number
@@ -364,7 +364,7 @@ public class CityRescueImpl implements CityRescue {
     }
 
     /**
-     * @param unitID what unit the the method is viewing
+     * @param unitId what unit the the method is viewing
      * @return unit string matching format
      * @throws IDNotRecognisedException in case unitID doesn't exist
      */
