@@ -74,7 +74,7 @@ public class Station {
 
     /**
      * Sets unit capacity for station
-     * 
+     *
      * @param maxUnits new unit cap
      */
     public void setMaxUnits(int maxUnits) {
